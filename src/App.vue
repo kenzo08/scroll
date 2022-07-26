@@ -100,6 +100,7 @@ input {
   position: sticky;
   width: 100%;
   height: 70px;
+  margin-bottom: 40px;
   top: 0;
   background: #ffffff;
 }
