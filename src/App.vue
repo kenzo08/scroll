@@ -1,31 +1,124 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
+import {onMounted, ref} from "vue";
+import SaleCard from '/src/components/SaleCard.vue'
+import axios from "axios";
+
+const sales = ref()
+const searchQuery = ref('');
+let prevScrollpos = window.scrollY;
+window.onscroll = function () {
+  let currentScrollPos = window.scrollY;
+  if (prevScrollpos > currentScrollPos) {
+    document.getElementById("filter").style.top = "70px";
+  } else {
+    document.getElementById("filter").style.top = "-140px";
+  }
+  prevScrollpos = currentScrollPos;
+}
+onMounted(async () => {
+  await axios
+      .get(`https://jsonplaceholder.typicode.com/photos?_start=0&_limit=10`)
+      .then(response => (sales.value = response.data));
+})
+
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div :class="$style.container">
+    <div :class="$style.navbar">
+      <input v-model="searchQuery">
+      <div id="filter" :class="$style.filter">
+        <p :class="$style['filter-label']">Подборки</p>
+        <p :class="$style['filter-label']">Все категории</p>
+        <p :class="$style['filter-label']">Где поесть</p>
+      </div>
+    </div>
+
+    <div :class="$style.horizontal">
+      <div v-for="sale in sales" :key="sale.id">
+        <SaleCard :title="sale.title"
+                  :imageLink="sale.url"
+        />
+      </div>
+    </div>
+    <div :class="$style.horizontal">
+      <div v-for="sale in sales" :key="sale.id">
+        <SaleCard :title="sale.title"
+                  :imageLink="sale.url"
+        />
+      </div>
+    </div>
+    <div :class="$style.horizontal">
+      <div v-for="sale in sales" :key="sale.id">
+        <SaleCard :title="sale.title"
+                  :imageLink="sale.url"
+        />
+      </div>
+    </div>
+    <div :class="$style.horizontal">
+      <div v-for="sale in sales" :key="sale.id">
+        <SaleCard :title="sale.title"
+                  :imageLink="sale.url"
+        />
+      </div>
+    </div>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
+<style module>
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 16px;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+.horizontal::-webkit-scrollbar {
+  display: none;
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+
+.horizontal {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-x: scroll;
 }
+
+input {
+  background: whitesmoke;
+  font-size: 16px;
+  height: 30px;
+  border-radius: 20px;
+  padding: 5px;
+}
+
+.navbar {
+  position: sticky;
+  width: 100%;
+  height: 70px;
+  top: 0;
+  background: #ffffff;
+}
+
+.filter {
+  display: flex;
+  position: fixed;
+  top: 70px;
+  gap: 8px;
+  width: 100%;
+  background: #ffffff;
+  transition: top 0.3s
+}
+
+.filter-label {
+  border: solid 1px lightslategray;
+  border-radius: 20px;
+  padding: 8px 4px;
+  white-space: nowrap;
+}
+
 </style>
