@@ -43,7 +43,7 @@ onMounted(async () => {
         <input v-model="searchQuery" placeholder="Найти" :class="$style.btn">
       </div>
       <div ref="filter" :class="$style.filter">
-        <p v-for="(item, index) in filterArr" :key="index" :class="$style['filter-label','btn']">{{ item }}</p>
+        <p v-for="(item, index) in filterArr" :key="index" :class="[$style['filter-label'], $style.btn]">{{ item }}</p>
       </div>
     </div>
 
