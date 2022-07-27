@@ -6,6 +6,7 @@ import axios from "axios";
 const sales = ref()
 const searchQuery = ref('');
 const filter = ref()
+const searchBar = ref()
 const horizontal = ref()
 
 const filterArr = ref([
@@ -15,54 +16,22 @@ const filterArr = ref([
   'Покупки',
   'Здоровье',
 ])
+
 let prevScrollpos = window.scrollY;
+
 window.onscroll = function () {
   let currentScrollPos = window.scrollY;
-  if (currentScrollPos > 70) {
-    filter.value.style.top = "0";
-  } else if (currentScrollPos <= 0) {
+  if (currentScrollPos <= 0||prevScrollpos > currentScrollPos) {
     filter.value.style.top = "70px";
   } else {
-   filter.value.style.top = "-140px";
+    filter.value.style.top = "-140px";
   }
   prevScrollpos = currentScrollPos;
 }
 
-const onEnter = (e: any) => {
-  console.log(1)
-}
-
-let pos = { top: 0, left: 0, x: 0, y: 0 };
-
-const mouseMoveHandler = function (e: any) {
-  // How far the mouse has been moved
-  const dx = e.clientX - pos.x;
-  const dy = e.clientY - pos.y;
-
-  // Scroll the element
-  horizontal.value.scrollTop = pos.top - dy;
-  horizontal.value.scrollLeft = pos.left - dx;
-};
-
-const mouseDownHandler = function (e: any) {
-  pos = {
-    // The current scroll
-    left: horizontal.value.scrollLeft,
-    top: horizontal.value.scrollTop,
-    // Get the current mouse position
-    x: e.clientX,
-    y: e.clientY,
-  };
-
-  document.addEventListener('mousemove', mouseMoveHandler);
-};
-
-
 onMounted(async () => {
-  horizontal.value.addEventListener('mouseenter', onEnter)
-  await axios
-      .get(`https://jsonplaceholder.typicode.com/photos?_start=0&_limit=10`)
-      .then(response => (sales.value = response.data));
+  let res = await axios.get(`https://jsonplaceholder.typicode.com/photos?_start=0&_limit=10`);
+  sales.value = res.data;
 })
 
 </script>
@@ -70,12 +39,11 @@ onMounted(async () => {
 <template>
   <div :class="$style.container">
     <div :class="$style.navbar">
-      <div :class="$style.searchBar">
+      <div ref="searchBar" :class="$style.searchBar">
         <input v-model="searchQuery" placeholder="Найти" :class="$style.btn">
       </div>
-
-      <div ref="filter"  :class="$style.filter">
-        <p v-for="(item, index) in filterArr" :key="index" :class="$style['filter-label','btn']">{{item}}</p>
+      <div ref="filter" :class="$style.filter">
+        <p v-for="(item, index) in filterArr" :key="index" :class="$style['filter-label','btn']">{{ item }}</p>
       </div>
     </div>
 
@@ -117,7 +85,7 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 16px;
+  padding: 0 15px 15px 15px;
   width: 100%;
 }
 
@@ -146,15 +114,17 @@ onMounted(async () => {
 
 .navbar {
   background-color: #fff;
+  position: sticky;
+  top: 0;
+  height: 70px;
+  z-index: 999;
 }
 
 .searchBar {
-  position: sticky;
   width: 100%;
   height: 35px;
-  top: 0;
   background: #ffffff;
-  z-index: 999;
+  padding: 10px 0;
 }
 
 .filter {
