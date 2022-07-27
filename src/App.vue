@@ -27,7 +27,7 @@ onMounted(async () => {
 <template>
   <div :class="$style.container">
     <div :class="$style.navbar">
-      <input v-model="searchQuery">
+      <input v-model="searchQuery" placeholder="Найти">
       <div ref="filter"  :class="$style.filter">
         <p :class="$style['filter-label']">Подборки</p>
         <p :class="$style['filter-label']">Все категории</p>

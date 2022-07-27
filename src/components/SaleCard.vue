@@ -66,6 +66,7 @@ defineProps<Props>()
   text-transform: uppercase;
   font-weight: 500;
   height: 30px;
+  padding: 0 16px;
 }
 
 .pic{
