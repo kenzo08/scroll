@@ -9,7 +9,7 @@ const filter = ref()
 let prevScrollpos = window.scrollY;
 window.onscroll = function () {
   let currentScrollPos = window.scrollY;
-  if (prevScrollpos > currentScrollPos) {
+  if (prevScrollpos > currentScrollPos || currentScrollPos === 0) {
     filter.value.style.top = "70px";
   } else {
    filter.value.style.top = "-140px";
