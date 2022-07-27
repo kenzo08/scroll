@@ -114,7 +114,6 @@ input {
   gap: 8px;
   width: 100%;
   background: #ffffff;
-  transition: top 0.3s
 }
 
 .filter-label {
