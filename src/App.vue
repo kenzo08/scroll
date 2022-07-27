@@ -104,6 +104,7 @@ input {
   margin-bottom: 40px;
   top: 0;
   background: #ffffff;
+  z-index: 999;
 }
 
 .filter {
