@@ -5,13 +5,14 @@ import axios from "axios";
 
 const sales = ref()
 const searchQuery = ref('');
+const filter = ref()
 let prevScrollpos = window.scrollY;
 window.onscroll = function () {
   let currentScrollPos = window.scrollY;
   if (prevScrollpos > currentScrollPos) {
-    document.getElementById("filter").style.top = "70px";
+    filter.value.style.top = "70px";
   } else {
-    document.getElementById("filter").style.top = "-140px";
+   filter.value.style.top = "-140px";
   }
   prevScrollpos = currentScrollPos;
 }
@@ -27,7 +28,7 @@ onMounted(async () => {
   <div :class="$style.container">
     <div :class="$style.navbar">
       <input v-model="searchQuery">
-      <div id="filter" :class="$style.filter">
+      <div ref="filter"  :class="$style.filter">
         <p :class="$style['filter-label']">Подборки</p>
         <p :class="$style['filter-label']">Все категории</p>
         <p :class="$style['filter-label']">Где поесть</p>
